@@ -25,20 +25,15 @@ spec:
   gateways:
     - ingress-gw-config
   http:
-    - match:
-      - uri:
-          prefix: '/experimental'
-      route:    
-      - destination:
-          host: fleetman-webapp.default.svc.cluster.local
-          subset: experimental
-    - match:
-      - uri:
-          prefix: '/'
-      route:    
-      - destination:
-          host: fleetman-webapp.default.svc.cluster.local
-          subset: original
+    - route:
+        - destination:
+            host: fleetman-webapp.default.svc.cluster.local
+            subset: original
+          weight: 90
+        - destination:
+            host: fleetman-webapp.default.svc.cluster.local
+            subset: experimental
+          weight: 10
 ---
 kind: DestinationRule
 apiVersion: networking.istio.io/v1alpha3

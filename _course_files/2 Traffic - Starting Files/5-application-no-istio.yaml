@@ -119,11 +119,37 @@ spec:
   selector:
     matchLabels:
       app: staff-service
+  replicas: 0
+  template: # template for the pods
+    metadata:
+      labels:
+        app: staff-service
+        version: v1
+    spec:
+      containers:
+      - name: staff-service
+        image: richardchesterwood/istio-fleetman-staff-service:6-placeholder
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: production-microservice
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: staff-service-risky
+spec:
+  selector:
+    matchLabels:
+      app: staff-service
   replicas: 1
   template: # template for the pods
     metadata:
       labels:
         app: staff-service
+        version: v2
     spec:
       containers:
       - name: staff-service
